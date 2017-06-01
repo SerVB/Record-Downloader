@@ -199,10 +199,14 @@
         <Component class="javax.swing.JButton" name="jButtonDownload">
           <Properties>
             <Property name="text" type="java.lang.String" value="&#x421;&#x43a;&#x430;&#x447;&#x430;&#x442;&#x44c;"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonDownloadMouseClicked"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JProgressBar" name="jProgressBarProgress">
           <AuxValues>

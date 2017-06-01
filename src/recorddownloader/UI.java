@@ -24,11 +24,6 @@
 
 package recorddownloader;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.management.InvalidAttributeValueException;
-
 /**
  *
  */
@@ -97,6 +92,7 @@ public class UI extends javax.swing.JFrame {
         jLabelProgress.setText("Прогресс:");
 
         jButtonDownload.setText("Скачать");
+        jButtonDownload.setEnabled(false);
         jButtonDownload.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButtonDownloadMouseClicked(evt);
@@ -192,22 +188,18 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRecordPathMouseClicked
 
     private void jButtonUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonUpdateMouseClicked
-        try {
-            RecordDownloader.vUpdateGenresNames();
-        } catch (IOException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidAttributeValueException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Updater updateTask = new Updater();
+
+        Thread updateThread = new Thread(updateTask);
+        updateThread.start();
     }//GEN-LAST:event_jButtonUpdateMouseClicked
 
     private void jButtonDownloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDownloadMouseClicked
-        try {
-            RecordDownloader.vDownloadFullList(jComboBoxGenres.getSelectedIndex());
-        } catch (IOException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidAttributeValueException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        if(jButtonDownload.isEnabled()) {
+            Downloader downTask = new Downloader();
+
+            Thread downThread = new Thread(downTask);
+            downThread.start();
         }
     }//GEN-LAST:event_jButtonDownloadMouseClicked
 
@@ -249,7 +241,7 @@ public class UI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonChoosePath;
-    private javax.swing.JButton jButtonDownload;
+    public javax.swing.JButton jButtonDownload;
     private javax.swing.JButton jButtonRecordPath;
     private javax.swing.JButton jButtonUpdate;
     public javax.swing.JComboBox jComboBoxGenres;
