@@ -78,13 +78,20 @@ public class RecordDownloader {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ui = new UI();
-        ui.setVisible(true);
-
+        initUi();
         vSetProgramName();
         vSetDefaultRepoPath();
         vSetSavePath(MUSIC_DIR);
         vSetProgress(-1, -1);
+    }
+    
+    private static void initUi() {
+        ui = new UI();
+        
+//        ui.setLookAndFeelSystem();
+//        ui.setLookAndFeelNimbus();
+        
+        ui.setVisible(true);
     }
 
     /**
