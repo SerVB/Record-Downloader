@@ -21,15 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package servb.record.uijava.downloader;
 
-package recorddownloader;
-
+import servb.record.core.downloader.entry.GenreEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.management.InvalidAttributeValueException;
+import servb.record.core.downloader.Updater;
 
 /**
  *
@@ -67,7 +68,7 @@ public class RecordDownloader {
     /**
      * Хранилище параметров жанров.
      */
-    public static ArrayList<Genre> alGenres = new ArrayList();
+    public static ArrayList<GenreEntry> alGenres = new ArrayList();
 
     /**
      * Фрейм.
@@ -84,13 +85,13 @@ public class RecordDownloader {
         vSetSavePath(MUSIC_DIR);
         vSetProgress(-1, -1);
     }
-    
+
     private static void initUi() {
         ui = new UI();
-        
+
 //        ui.setLookAndFeelSystem();
 //        ui.setLookAndFeelNimbus();
-        
+
         ui.setVisible(true);
     }
 

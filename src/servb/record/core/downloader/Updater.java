@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package servb.record.core.downloader;
 
-package recorddownloader;
-
+import servb.record.core.downloader.entry.TrackEntry;
+import servb.record.core.downloader.entry.GenreEntry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,13 +32,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static recorddownloader.RecordDownloader.NEW_LINE;
-import static recorddownloader.RecordDownloader.alGenres;
-import static recorddownloader.RecordDownloader.ui;
-import static recorddownloader.RecordDownloader.vSetProgress;
+import static servb.record.uijava.downloader.RecordDownloader.NEW_LINE;
+import static servb.record.uijava.downloader.RecordDownloader.alGenres;
+import static servb.record.uijava.downloader.RecordDownloader.ui;
+import static servb.record.uijava.downloader.RecordDownloader.vSetProgress;
 
 /**
- *
+ * Обновлятель списка жанров.
  */
 public class Updater implements Runnable {
 
@@ -50,15 +51,15 @@ public class Updater implements Runnable {
 
     /**
      * Возвращает код страницы.
+     *
      * @param siteURL Прямая ссылка на страницу.
      * @return Код страницы.
-     * @throws IOException
      */
     private static String sGetCode(String siteURL) {
 
         URL url;
         try {
-            
+
             url = new URL(siteURL);
 
         } catch (MalformedURLException ex) {
@@ -125,8 +126,8 @@ public class Updater implements Runnable {
             tmp = arsHtmlMain.substring(idx-1,idx); // " или '
             idy = arsHtmlMain.indexOf(tmp,idx);
             String link = arsHtmlMain.substring(idx, idy); // Полученная ссылка
-            alGenres.add(new Genre(link, "", site + link));
-            ui.jComboBoxGenres.addItem(alGenres.get(alGenres.size()-1).name);
+            alGenres.add(new GenreEntry(link.substring(0, link.length() - 1), "", site + link));
+            ui.jComboBoxGenres.addItem(alGenres.get(alGenres.size()-1).getName());
         }
 
         ui.jLabelStatus.setText("Получение списка жанров... Готово.");
@@ -141,9 +142,8 @@ public class Updater implements Runnable {
         vSetProgress(0, alGenres.size());
 
         for(int i = 0; i < alGenres.size(); i++) {
-            alGenres.get(i).code = sGetCode(alGenres.get(i).fullPath);
-
-            ui.jLabelStatus.setText("Получение жанров... Получен жанр \"" + alGenres.get(i).name + "\".");
+            alGenres.get(i).code = sGetCode(alGenres.get(i).getFullPath());
+            ui.jLabelStatus.setText("Получение жанров... Получен жанр \"" + alGenres.get(i).getName() + "\".");
 
             vSetProgress(i + 1, alGenres.size());
         }
@@ -166,7 +166,7 @@ public class Updater implements Runnable {
                 String tmp = alGenres.get(i).code.substring(idx-1,idx); // " или '
                 int idy = alGenres.get(i).code.indexOf(tmp,idx);
                 String link = alGenres.get(i).code.substring(idx, idy); // Полученная ссылка
-                alGenres.get(i).alTracks.add( new Track(link, "", -1, alGenres.get(i).fullPath + link) );
+                alGenres.get(i).getTracks().add(new TrackEntry(link, "", -1, alGenres.get(i).getFullPath() + link));
             }
 
             vSetProgress(i + 1, alGenres.size());

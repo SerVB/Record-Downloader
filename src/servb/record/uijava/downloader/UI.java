@@ -21,18 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-package recorddownloader;
+package servb.record.uijava.downloader;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import servb.record.core.downloader.Downloader;
+import servb.record.core.downloader.Updater;
 
 /**
  *
  */
-public class UI extends javax.swing.JFrame {
+public final class UI extends JFrame {
 
     /**
      * Creates new form UI
@@ -240,7 +242,7 @@ public class UI extends javax.swing.JFrame {
     public void setLookAndFeelSystem() {
         //<editor-fold defaultstate="collapsed" desc="Установка системного скина">
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -249,10 +251,10 @@ public class UI extends javax.swing.JFrame {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         //</editor-fold>
     }
-    
+
 //    /**
 //     * @param args the command line arguments
 //     */

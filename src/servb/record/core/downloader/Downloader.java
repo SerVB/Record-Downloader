@@ -21,8 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-package recorddownloader;
+package servb.record.core.downloader;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,11 +35,11 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static recorddownloader.RecordDownloader.alGenres;
-import static recorddownloader.RecordDownloader.START_TIME;
-import static recorddownloader.RecordDownloader.BUFFER_SIZE;
-import static recorddownloader.RecordDownloader.ui;
-import static recorddownloader.RecordDownloader.vSetProgress;
+import static servb.record.uijava.downloader.RecordDownloader.alGenres;
+import static servb.record.uijava.downloader.RecordDownloader.START_TIME;
+import static servb.record.uijava.downloader.RecordDownloader.BUFFER_SIZE;
+import static servb.record.uijava.downloader.RecordDownloader.ui;
+import static servb.record.uijava.downloader.RecordDownloader.vSetProgress;
 
 /**
  * Класс загрузчика.
@@ -54,28 +53,29 @@ public class Downloader implements Runnable {
 
     /**
      * Загружает все треки жанра на диск.
-     * @param genreID Номер жанра для загрузки.
+     *
+     * @param genreId Номер жанра для загрузки.
      */
-    public static void vDownloadFullList(final int genreID) {
-        final String saveFolder = ui.jTextFieldSavePath.getText() + START_TIME + alGenres.get(genreID).name;
+    public static void vDownloadFullList(final int genreId) {
+        final String saveFolder = ui.jTextFieldSavePath.getText() + START_TIME + alGenres.get(genreId).getName();
         File fPathToSave = new File(saveFolder);
         fPathToSave.mkdirs();
 
         ui.jLabelStatus.setText("Загрузка треков...");
-        vSetProgress(0, alGenres.get(genreID).alTracks.size());
-        for(int i = 0; i < alGenres.get(genreID).alTracks.size(); i++) {
+        vSetProgress(0, alGenres.get(genreId).getTracks().size());
+        for(int i = 0; i < alGenres.get(genreId).getTracks().size(); i++) {
             try {
-                String decodedName = java.net.URLDecoder.decode(alGenres.get(genreID).alTracks.get(i).originalName, "UTF-8");
-                
+                String decodedName = java.net.URLDecoder.decode(alGenres.get(genreId).getTracks().get(i).getOriginalName(), "UTF-8");
+
                 vDownloadFile(
-                        alGenres.get(genreID).alTracks.get(i).fullPath,
+                        alGenres.get(genreId).getTracks().get(i).getFullPath(),
                         saveFolder + decodedName,
                         BUFFER_SIZE,
                         0
                 );
-                // TODO: Эта строчка выводит сообщение об успешности 
+                // TODO: Эта строчка выводит сообщение об успешности
                 //       загрузки файла в любом случае. Исправить!
-                System.out.println("Done loading \"" + alGenres.get(genreID).alTracks.get(i).fullPath + "\".");
+                System.out.println("Done loading \"" + alGenres.get(genreId).getTracks().get(i).getFullPath() + "\".");
                 ui.jLabelStatus.setText("Загрузка треков... Загружен \"" + decodedName + "\".");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,15 +84,16 @@ public class Downloader implements Runnable {
             } catch (ProtocolException ex) {
                 Logger.getLogger(Downloader.class.getName()).log(Level.SEVERE, null, ex);
             }
-                
-            vSetProgress(i + 1, alGenres.get(genreID).alTracks.size());
+
+            vSetProgress(i + 1, alGenres.get(genreId).getTracks().size());
         }
-        
+
         ui.jLabelStatus.setText("Загрузка треков... Готово.");
     }
 
     /**
      * Загружает файл на диск.
+     *
      * @param strURL    Прямая ссылка к загружаемому файлу.
      * @param strPath   Путь к загружаемому файлу на диске.
      * @param buffSize  Размер буфера (любой).
@@ -103,13 +104,13 @@ public class Downloader implements Runnable {
      */
     static void vDownloadFile(String strURL, String strPath, int buffSize, int count) throws MalformedURLException, ProtocolException {
         final int MAX_TRIES = 5;
-        
+
         if (count < MAX_TRIES) {
             URL connection = new URL(strURL);
             HttpURLConnection urlconn;
             InputStream in = null;
             OutputStream writer = null;
-            
+
             try {
                 urlconn = (HttpURLConnection) connection.openConnection();
                 urlconn.setRequestMethod("GET");
@@ -141,7 +142,7 @@ public class Downloader implements Runnable {
                                 "Не могу закрыть writer!"
                         );
                     }
-                
+
                 if (in != null)
                     try {
                         in.close();
