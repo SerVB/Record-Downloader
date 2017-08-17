@@ -57,7 +57,7 @@ public class Downloader implements Runnable {
      * @param genreId Номер жанра для загрузки.
      */
     public static void vDownloadFullList(final int genreId) {
-        final String saveFolder = ui.jTextFieldSavePath.getText() + START_TIME + alGenres.get(genreId).getName();
+        final String saveFolder = ui.jTextFieldSavePath.getText() + START_TIME + alGenres.get(genreId).getName() + File.separator;
         File fPathToSave = new File(saveFolder);
         fPathToSave.mkdirs();
 
